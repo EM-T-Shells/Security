@@ -82,10 +82,17 @@
   /* TIMELINE */
   .timeline-card{background:#030d1a;border:1px solid #0e2540;border-radius:8px;padding:16px;margin-bottom:12px}
   .section-label{font-size:9px;color:#475569;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
-  .tl-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #0a1828}
-  .tl-bar{width:3px;height:24px;border-radius:2px;flex-shrink:0}
+  .tl-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #0a1828;position:relative}
+  .tl-bar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:24px}
   .tl-name{flex:1;font-size:12px;color:#94a3b8}
   .tl-date{font-size:11px;font-weight:700}
+  .tl-row.tl-done .tl-name{color:#f1f5f9}
+  .tl-row.tl-done .tl-date{opacity:.5;text-decoration:line-through;font-size:9px}
+  .tl-status{font-size:10px;font-weight:800;letter-spacing:1px}
+  .tl-achieved{font-size:9px;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+  .tl-row.tl-inprogress .tl-name{color:#f1f5f9}
+  .tl-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 
   /* COACHING */
   .coaching-card{background:#030d1a;border:1px solid #0e2540;border-radius:8px;padding:20px;margin-bottom:12px}
@@ -171,15 +178,15 @@ const COACHING_NOTES = [
 ];
 
 const TIMELINE = [
-  {label:"Security+",date:"Sep 2026",color:"#38bdf8"},
-  {label:"eJPT",date:"Dec 2026",color:"#f97316"},
-  {label:"Burp Suite CP",date:"Mid 2027",color:"#fb923c"},
-  {label:"🎰 DEF CON 2027 — First Attendance + Village CTFs",date:"Aug 2027",color:"#ff0040"},
-  {label:"AWS Security Specialty",date:"Late 2027",color:"#34d399"},
-  {label:"AI Security Portfolio",date:"Mid 2028",color:"#e879f9"},
-  {label:"🎰 DEF CON 2028 — Compete Seriously in Village CTF",date:"Aug 2028",color:"#ff0040"},
-  {label:"OSCP",date:"2029",color:"#f43f5e"},
-  {label:"Bug Bounty Income Starts",date:"~Month 10",color:"#facc15"},
+  {label:"Security+",date:"Sep 2026",color:"#38bdf8",stageId:"s0"},
+  {label:"eJPT",date:"Dec 2026",color:"#f97316",stageId:"s1"},
+  {label:"Burp Suite CP",date:"Mid 2027",color:"#fb923c",stageId:"s2"},
+  {label:"🎰 DEF CON 2027 — First Attendance + Village CTFs",date:"Aug 2027",color:"#ff0040",stageId:"s2"},
+  {label:"AWS Security Specialty",date:"Late 2027",color:"#34d399",stageId:"s3"},
+  {label:"AI Security Portfolio",date:"Mid 2028",color:"#e879f9",stageId:"s4"},
+  {label:"🎰 DEF CON 2028 — Compete Seriously in Village CTF",date:"Aug 2028",color:"#ff0040",stageId:"s4"},
+  {label:"OSCP",date:"2029",color:"#f43f5e",stageId:"s5"},
+  {label:"Bug Bounty Income Starts",date:"~Month 10",color:"#facc15",stageId:"s2"},
 ];
 
 const RES_COLOR = {
@@ -702,10 +709,11 @@ const STAGES = [
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const LS_KEY = "emre_roadmap_v2";
-let state = {checked:{}, milestones:{}, open:{stage:"s0",month:"m1",week:"w1"}, tab:"roadmap"};
+let state = {checked:{}, milestones:{}, open:{stage:"s0",month:"m1",week:"w1"}, tab:"roadmap", completedOn:{}};
 
 function loadState(){
   try{const s=localStorage.getItem(LS_KEY);if(s)state=Object.assign(state,JSON.parse(s));}catch(e){}
+  checkAutoComplete();
 }
 function saveState(){
   try{
@@ -717,9 +725,36 @@ function saveState(){
 }
 
 // ── UTILS ─────────────────────────────────────────────────────────────────────
+function stageComplete(stage){
+  let t=0,d=0;
+  stage.months.forEach(m=>m.weeks.forEach(w=>w.days.forEach(x=>{t++;if(state.checked[x.id])d++;})));
+  return t>0 && d===t;
+}
+
+function checkAutoComplete(){
+  STAGES.forEach(s=>{
+    const key="stage_"+s.id;
+    if(stageComplete(s) && !state.completedOn[key]){
+      const now=new Date();
+      state.completedOn[key]=now.toLocaleDateString("en-US",{month:"short",year:"numeric"});
+    } else if(!stageComplete(s) && state.completedOn[key]){
+      // unchecked — remove completion date
+      delete state.completedOn[key];
+    }
+  });
+  // Also track setup completion
+  const suDone=SETUP.filter(x=>state.checked[x.id]).length;
+  if(suDone===SETUP.length && !state.completedOn["setup"]){
+    state.completedOn["setup"]=new Date().toLocaleDateString("en-US",{month:"short",year:"numeric"});
+  } else if(suDone<SETUP.length){
+    delete state.completedOn["setup"];
+  }
+}
+
 function toggleCheck(id,isMilestone){
   if(isMilestone) state.milestones[id]=!state.milestones[id];
   else state.checked[id]=!state.checked[id];
+  checkAutoComplete();
   saveState();
   renderAll();
 }
@@ -917,25 +952,65 @@ function renderRoadmap(){
 
 function renderOverview(){
   const el=document.getElementById("tab-overview");
+
+  // Stage cards
   let html=`<div class="overview-grid">`;
   STAGES.forEach(s=>{
     const{t,d}=stageStats(s);
-    html+=`<div class="ov-card" style="border:1px solid ${s.accent}22">
-      <div class="ov-code" style="color:${s.accent}">${s.code}</div>
+    const done=stageComplete(s);
+    const pct=t===0?0:Math.round((d/t)*100);
+    const inprog=pct>0&&!done;
+    const completedDate=state.completedOn["stage_"+s.id];
+    html+=`<div class="ov-card" style="border:1px solid ${done?"#22c55e":inprog?s.accent+"88":s.accent+"22"}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px">
+        <div class="ov-code" style="color:${done?"#22c55e":s.accent}">${s.code}</div>
+        ${done?`<span style="font-size:9px;color:#22c55e;font-weight:700">✓ DONE</span>`:inprog?`<span style="font-size:9px;color:${s.accent};font-weight:700">${pct}%</span>`:""}
+      </div>
       <div class="ov-title">${s.title}</div>
-      <div class="ov-target">${s.target}</div>
-      ${barHTML(t,d,s.accent)}
+      <div class="ov-target" style="color:${done?"#22c55e":inprog?s.accent:"#334155"}">${completedDate?"Completed "+completedDate:s.target}</div>
+      ${barHTML(t,d,done?"#22c55e":s.accent)}
     </div>`;
   });
-  html+=`</div><div class="timeline-card">
-    <div class="section-label">Full Timeline</div>`;
+  html+=`</div>`;
+
+  // Dynamic timeline
+  html+=`<div class="timeline-card">
+    <div class="section-label">Timeline — Live Progress</div>`;
+
   TIMELINE.forEach(item=>{
-    html+=`<div class="tl-row">
-      <div class="tl-bar" style="background:${item.color}"></div>
-      <div class="tl-name">${item.label}</div>
-      <div class="tl-date" style="color:${item.color}">${item.date}</div>
+    // Determine status from linked stage
+    const stage=item.stageId?STAGES.find(s=>s.id===item.stageId):null;
+    const isDone=stage?stageComplete(stage):false;
+    const completedDate=stage?state.completedOn["stage_"+item.stageId]:null;
+    const {t,d}=stage?stageStats(stage):{t:0,d:0};
+    const pct=t===0?0:Math.round((d/t)*100);
+    const isInProgress=pct>0&&!isDone;
+
+    let statusHtml="";
+    let rowClass="tl-row";
+    if(isDone){
+      rowClass+=" tl-done";
+      statusHtml=`<div style="text-align:right">
+        <div class="tl-status" style="color:#22c55e">✓ DONE</div>
+        ${completedDate?`<div class="tl-achieved" style="color:#22c55e">${completedDate}</div>`:""}
+      </div>`;
+    } else if(isInProgress){
+      rowClass+=" tl-inprogress";
+      statusHtml=`<div style="text-align:right">
+        <div class="tl-status" style="color:${item.color}"><span class="tl-pulse" style="background:${item.color}"></span>IN PROGRESS</div>
+        <div class="tl-date" style="color:${item.color}">${item.date}</div>
+      </div>`;
+    } else {
+      statusHtml=`<div class="tl-date" style="color:${item.color};opacity:.5">${item.date}</div>`;
+    }
+
+    html+=`<div class="${rowClass}">
+      <div class="tl-bar" style="background:${isDone?"#22c55e":isInProgress?item.color:item.color+"44"}"></div>
+      <div class="tl-name" style="color:${isDone?"#f1f5f9":isInProgress?"#f1f5f9":"#475569"}">${item.label}</div>
+      ${statusHtml}
     </div>`;
   });
+
   html+=`</div>`;
   el.innerHTML=html;
 }
