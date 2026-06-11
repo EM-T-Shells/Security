@@ -165,14 +165,19 @@ const COACHING_NOTES = [
   "AI security research has no formal cert. Your GitHub portfolio IS your credential.",
   "Cloud and AI skills reinforce each other — everything runs in the cloud.",
   "This roadmap is a guide, not a contract. Adjust without guilt.",
+  "PicoCTF is beginner-friendly CTF practice — start in Month 2, do it alongside study not instead of it.",
+  "HackTheBox CTF events run monthly — compete in at least one per stage from Stage 1 onward.",
+  "DEF CON is every August in Las Vegas. Target 2027 as first attendance — Village CTFs at BSCP level are very approachable.",
 ];
 
 const TIMELINE = [
   {label:"Security+",date:"Sep 2026",color:"#38bdf8"},
   {label:"eJPT",date:"Dec 2026",color:"#f97316"},
   {label:"Burp Suite CP",date:"Mid 2027",color:"#fb923c"},
+  {label:"🎰 DEF CON 2027 — First Attendance + Village CTFs",date:"Aug 2027",color:"#ff0040"},
   {label:"AWS Security Specialty",date:"Late 2027",color:"#34d399"},
   {label:"AI Security Portfolio",date:"Mid 2028",color:"#e879f9"},
+  {label:"🎰 DEF CON 2028 — Compete Seriously in Village CTF",date:"Aug 2028",color:"#ff0040"},
   {label:"OSCP",date:"2029",color:"#f43f5e"},
   {label:"Bug Bounty Income Starts",date:"~Month 10",color:"#facc15"},
 ];
@@ -196,6 +201,7 @@ const RES_COLOR = {
   "Mock Exam":"#f43f5e","ippsec":"#f43f5e","HTB Pro Labs":"#f43f5e",
   "Review":"#facc15","Review + Blog":"#facc15","Review + GitHub":"#facc15",
   "Blog + Plan":"#c084fc","Plan":"#c084fc",
+  "PicoCTF":"#fbbf24","HTB CTF":"#a1a1aa","DEF CON":"#ff0040","Kali Setup":"#84cc16",
 };
 function rc(r){return RES_COLOR[r]||"#64748b";}
 
@@ -247,7 +253,7 @@ const STAGES = [
         {id:"w5d4",day:"THU",time:"7–8am",res:"Prof. Messer",task:"Review crypto — build Notion flashcards for algorithms"},
         {id:"w5d5",day:"FRI",time:"7–8am",res:"ExamCompass",task:"20 practice questions on Cryptography"},
         {id:"w5d6",day:"SAT",time:"9–11am",res:"TryHackMe",task:"Pre-Security — complete 'Linux Fundamentals Part 1'"},
-        {id:"w5d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"Linux Fundamentals Part 1 writeup — publish to blog"},
+        {id:"w5d7",day:"SUN",time:"9–11am",res:"PicoCTF",task:"Create free account at picoctf.org — complete 2–3 beginner General Skills challenges. Low stakes, just get a feel for CTF thinking."},
       ]},
       {id:"w6",title:"Week 6 — PKI & Certificates",days:[
         {id:"w6d1",day:"MON",time:"7–8am",res:"Prof. Messer",task:"PKI videos — certificate authorities, trust chains"},
@@ -256,7 +262,7 @@ const STAGES = [
         {id:"w6d4",day:"THU",time:"7–8am",res:"Prof. Messer",task:"Review PKI — draw a trust chain diagram in Notion"},
         {id:"w6d5",day:"FRI",time:"7–8am",res:"ExamCompass",task:"20 practice questions on PKI and Certificates"},
         {id:"w6d6",day:"SAT",time:"9–11am",res:"TryHackMe",task:"Pre-Security — complete 'Linux Fundamentals Part 2'"},
-        {id:"w6d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"Linux Fundamentals Part 2 writeup — publish to blog"},
+        {id:"w6d7",day:"SUN",time:"9–11am",res:"PicoCTF",task:"PicoCTF — complete 2–3 Cryptography challenges. Connects directly to what you studied this week."},
       ]},
       {id:"w7",title:"Week 7 — Identity & Access Management",days:[
         {id:"w7d1",day:"MON",time:"7–8am",res:"Prof. Messer",task:"IAM videos — authentication vs authorization"},
@@ -265,7 +271,7 @@ const STAGES = [
         {id:"w7d4",day:"THU",time:"7–8am",res:"Prof. Messer",task:"Review IAM — quiz yourself on access control models"},
         {id:"w7d5",day:"FRI",time:"7–8am",res:"ExamCompass",task:"20 practice questions on IAM"},
         {id:"w7d6",day:"SAT",time:"9–11am",res:"TryHackMe",task:"Pre-Security — complete 'Linux Fundamentals Part 3'"},
-        {id:"w7d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"Linux Fundamentals Part 3 writeup — most detailed yet"},
+        {id:"w7d7",day:"SUN",time:"9–11am",res:"PicoCTF",task:"PicoCTF — complete 2–3 Web Exploitation beginner challenges. Your dev background will make these feel natural."},
       ]},
       {id:"w8",title:"Week 8 — MFA, SSO & Directory Services",days:[
         {id:"w8d1",day:"MON",time:"7–8am",res:"Prof. Messer",task:"MFA and SSO videos — types, factors, use cases"},
@@ -312,7 +318,7 @@ const STAGES = [
         {id:"w12d4",day:"THU",time:"7–8am",res:"Prof. Messer",task:"Review all Month 3 — update Notion cheat sheet"},
         {id:"w12d5",day:"FRI",time:"7–8am",res:"ExamCompass",task:"30 mixed Month 3 questions"},
         {id:"w12d6",day:"SAT",time:"9–11am",res:"TryHackMe",task:"Jr Pen Tester — continue path"},
-        {id:"w12d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"GitHub portfolio cleanup — make everything presentable"},
+        {id:"w12d7",day:"SUN",time:"9–11am",res:"Kali Setup",task:"Install UTM (mac.getutm.app) and Kali Linux ARM64 image — spin up your VM, navigate the terminal, run ls/pwd/whoami. Just get comfortable in the environment. No tasks yet."},
       ]},
     ],milestones:["Prof. Messer — Web Vulns, Cloud, IR, GRC done","Chapple Chapters 9–12 read","AWS Free Tier account active — IAM explored","Jr Pen Tester path started","12+ blog posts and writeups live","💡 Observe Workday SSO & access controls at work — live ERP lab"]},
     {id:"m4",title:"Month 4 — Exam Prep",note:"No new material. Review, practice exams, pass.",weeks:[
@@ -362,8 +368,8 @@ const STAGES = [
         {id:"w17d3",day:"WED",time:"7–8am",res:"INE PTS",task:"Continue web application basics"},
         {id:"w17d4",day:"THU",time:"7–8am",res:"TryHackMe",task:"Jr Pen Tester — continue where you left off"},
         {id:"w17d5",day:"FRI",time:"7–8am",res:"TryHackMe",task:"Jr Pen Tester — Burp Suite basics room"},
-        {id:"w17d6",day:"SAT",time:"9–11am",res:"HackTheBox",task:"Create HTB account — first Starting Point machine with walkthrough"},
-        {id:"w17d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"First HackTheBox writeup — publish to blog"},
+        {id:"w17d6",day:"SAT",time:"9–11am",res:"Kali Setup",task:"From this point all labs done inside Kali VM. Open Kali, launch Nmap, Metasploit, Burp Suite, Gobuster — confirm all tools work. Run nmap against HackTheBox Starting Point target."},
+        {id:"w17d7",day:"SUN",time:"9–11am",res:"HackTheBox",task:"First HackTheBox writeup — publish to blog. Also check htb.com/events for any upcoming CTF competitions to bookmark."},
       ]},
       {id:"w18",title:"Week 2 — Web Attacks",days:[
         {id:"w18d1",day:"MON",time:"7–8am",res:"INE PTS",task:"Web attacks — SQLi, XSS basics"},
@@ -381,7 +387,7 @@ const STAGES = [
         {id:"w19d4",day:"THU",time:"7–8am",res:"TryHackMe",task:"Jr Pen Tester — Metasploit room"},
         {id:"w19d5",day:"FRI",time:"7–8am",res:"HTB Academy",task:"Linux Fundamentals module"},
         {id:"w19d6",day:"SAT",time:"9–11am",res:"HackTheBox",task:"Starting Point — machine #3, attempt solo first"},
-        {id:"w19d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"HTB machine #3 writeup + blog: 'Moving from Security+ into offensive'"},
+        {id:"w19d7",day:"SUN",time:"9–11am",res:"PicoCTF",task:"PicoCTF — push into intermediate Web Exploitation and Binary Exploitation challenges. Notice how your offensive skills are making these easier than Month 2."},
       ]},
       {id:"w20",title:"Week 4 — Host & Network Pen Testing",days:[
         {id:"w20d1",day:"MON",time:"7–8am",res:"INE PTS",task:"Host penetration module"},
@@ -410,7 +416,7 @@ const STAGES = [
         {id:"w22d4",day:"THU",time:"7–8am",res:"HTB Academy",task:"Shells and Payloads module"},
         {id:"w22d5",day:"FRI",time:"7–8am",res:"HTB Academy",task:"Attacking Web Applications with Ffuf module"},
         {id:"w22d6",day:"SAT",time:"9–11am",res:"HackTheBox",task:"TJNull list — 2 more easy machines, solo"},
-        {id:"w22d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"Machine writeups + blog: 'What post-exploitation actually looks like'"},
+        {id:"w22d7",day:"SUN",time:"9–11am",res:"HTB CTF",task:"Participate in a HackTheBox CTF event — check htb.com/events. Enter as solo or find a partner. Focus on web and easy binary categories. Document every challenge you attempt."},
       ]},
       {id:"w23",title:"Week 7 — INE Full Review",days:[
         {id:"w23d1",day:"MON",time:"7–8am",res:"INE PTS",task:"Review networking and web attack modules"},
@@ -517,7 +523,7 @@ const STAGES = [
         {id:"w33d4",day:"THU",time:"7–8am",res:"PortSwigger",task:"Review all wrong answers from practice exams"},
         {id:"w33d5",day:"FRI",time:"7–8am",res:"Blog/GitHub",task:"Document bug bounty methodology on GitHub"},
         {id:"w33d6",day:"SAT",time:"9–11am",res:"PortSwigger",task:"Practice exam #3 — aiming for clean pass"},
-        {id:"w33d7",day:"SUN",time:"9–11am",res:"Bug Bounty",task:"Active hunting + blog: 'Three months of bug bounty — honest reflection'"},
+        {id:"w33d7",day:"SUN",time:"9–11am",res:"DEF CON",task:"DEF CON 2027 is August — start planning. Register at defcon.org, book flights and hotel early (sells out). Research AppSec Village and Web Village CTF formats. This is your target event."},
       ]},
       {id:"w34",title:"Week 8 — BSCP Exam",days:[
         {id:"w34d1",day:"MON",time:"7–8am",res:"PortSwigger",task:"Light review — weak areas only"},
@@ -528,7 +534,7 @@ const STAGES = [
         {id:"w34d6",day:"SAT",time:"9–11am",res:"🎉 Celebrate",task:"Update LinkedIn, resume — share the win"},
         {id:"w34d7",day:"SUN",time:"9–11am",res:"Blog + Plan",task:"Post-exam blog + begin AWS Security Specialty prep research"},
       ]},
-    ],milestones:["🏆 BURP SUITE CERTIFIED PRACTITIONER","Active bug bounty income started","LinkedIn and resume updated","20+ writeups on GitHub","Ready to begin Cloud Security + AI Security stages"]},
+    ],milestones:["🏆 BURP SUITE CERTIFIED PRACTITIONER","Active bug bounty income started","LinkedIn and resume updated","20+ writeups on GitHub","🎰 DEF CON 2027 — attend, compete in AppSec/Web Village CTF","Ready to begin Cloud Security + AI Security stages"]},
   ]},
   {id:"s3",code:"☁️",label:"Stage 3",title:"Cloud Security",duration:"Months 12–15",target:"Late 2027",accent:"#34d399",cert:"AWS Certified Security — Specialty (SCS-C02)",months:[
     {id:"m10",title:"Month 10 — AWS Foundations",note:"Cloud is the backbone of every modern attack surface. Learn it from the inside.",weeks:[
@@ -648,7 +654,7 @@ const STAGES = [
         {id:"w46d6",day:"SAT",time:"9–11am",res:"Bug Bounty",task:"Active AI bug bounty hunting"},
         {id:"w46d7",day:"SUN",time:"9–11am",res:"Blog/GitHub",task:"Publish research to blog and GitHub — share on LinkedIn and security communities"},
       ]},
-    ],milestones:["Original AI security research paper published","Vulnerable LLM app with RAG and agentic scenarios documented","Active AI bug bounty finds on HackerOne","Crucible challenges progressing","Following key AI security researchers — staying current","🏆 AI SECURITY PORTFOLIO COMPLETE"]},
+    ],milestones:["Original AI security research paper published","Vulnerable LLM app with RAG and agentic scenarios documented","Active AI bug bounty finds on HackerOne","Crucible challenges progressing","Following key AI security researchers — staying current","🎰 DEF CON 2028 — compete seriously in AI Village CTF","🏆 AI SECURITY PORTFOLIO COMPLETE"]},
   ]},
   {id:"s5",code:"OSCP",label:"Stage 5",title:"OSCP",duration:"Months 22–29",target:"2029",accent:"#f43f5e",cert:"Offensive Security Certified Professional (OSCP)",months:[
     {id:"m14",title:"Months 22–25 — PEN-200 & Active Directory",note:"OSCP is the gold standard. Bug bounty and AI research continue alongside.",weeks:[
@@ -679,7 +685,7 @@ const STAGES = [
         {id:"w49d4",day:"Phase",time:"Months 26–27",res:"TJNull List",task:"TJNull hard machines — full solo, document methodology"},
         {id:"w49d5",day:"Phase",time:"Months 26–27",res:"ippsec",task:"Watch ippsec YouTube walkthroughs — study methodology not just solutions"},
         {id:"w49d6",day:"SAT",time:"9–11am",res:"HTB Pro Labs",task:"Continue HTB Pro Labs — push into harder environments"},
-        {id:"w49d7",day:"SUN",time:"9–11am",res:"Bug Bounty",task:"Active bug bounty — keep income active"},
+        {id:"w49d7",day:"SUN",time:"9–11am",res:"HTB CTF",task:"Participate in HackTheBox CTF event — at OSCP level you should be placing competitively. Focus on pwn, web, and reversing. Document every solve."},
       ]},
       {id:"w50",title:"Months 28–29 — Exam Prep & Exam",days:[
         {id:"w50d1",day:"Phase",time:"Month 28",res:"Methodology",task:"Full methodology review — every attack vector covered and documented"},
